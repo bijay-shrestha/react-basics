@@ -1,26 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+//COMPONENTS
+import Header from './components/headers';
+import JSON from './db.json';
+import NewsList from './components/news_list';
+
+
+class App extends Component {
+
+    state = {
+        news: JSON,
+        filtered: JSON
+    };
+
+    filterNews(keywords) {
+        let filtered = this.state.news.filter((item) => {
+            return item.title.indexOf(keywords) > -1;
+        });
+
+        this.setState({filtered});
+
+    }
+
+    render() {
+        return (
+            <div>
+                <h1><Header newsSearch={keywords => this.filterNews(keywords)}/></h1>
+                <NewsList news={this.state.filtered}/>
+            </div>
+        );
+    }
 }
 
 export default App;
